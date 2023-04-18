@@ -47,7 +47,7 @@
 // while (perfectNumber.length < 4) {
 //   for (let i = 1; i < number; i++) {
 //     if (number % i === 0) {
-//       divisorSum + i
+//       divisorSum += i
 //     }
 //   }
 
@@ -164,4 +164,4 @@
 // console.log("Nomes em ordem inversa:");
 // console.log(nomesReverse);
 
-// const msg = true
+
