@@ -9,6 +9,38 @@ app.listen(8080, () => {
   console.log('Servidor iniciado 🚀')
 })
 
+app.post('/cadastro', (request, response) => {
+  const dados = request.body
+
+  if (!dados.id) {
+    return response.status(400).json("O campo id é obrigatório")
+  }
+
+  if (!dados.nome) {
+    return response.status(400).json("O campo nome é obrigatório")
+  }
+
+  if (!dados.email) {
+    return response.status(400).json("O campo e-mail é obrigatório")
+  }
+
+  const novoUsuario = {
+    id: new Date().getTime(),
+    nome: dados.nome,
+    email: dados.email,
+    senha: dados.senha,
+    logado: false
+  }
+
+  listaUsuarios.push(novoUsuario)
+
+  return response.status(201).json({
+    sucess: true,
+    message: 'Usuario criado com sucesso',
+    data: novoUsuario
+  })
+})
+
 app.get('/', (request, response) => {
   return response.json('OK')
 })
