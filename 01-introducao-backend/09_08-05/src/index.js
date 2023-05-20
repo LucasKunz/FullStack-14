@@ -12,8 +12,14 @@ app.listen(8080, () => {
 app.post('/cadastro', (request, response) => {
   const dados = request.body
 
-  if (!dados.id) {
-    return response.status(400).json("O campo id é obrigatório")
+  const usuario = listaUsuarios.find((user) => user.email === data.email)
+
+  if (usuario) {
+    return response.status(400).json({
+      sucess: false,
+      message: 'Nome de usuário já existe. Cadastre um novo usuário',
+      data: {}
+    })
   }
 
   if (!dados.nome) {
@@ -22,6 +28,10 @@ app.post('/cadastro', (request, response) => {
 
   if (!dados.email) {
     return response.status(400).json("O campo e-mail é obrigatório")
+  }
+
+  if (!dados.senha) {
+    return response.status(400).json("O campo senha é obrigatório")
   }
 
   const novoUsuario = {
@@ -41,61 +51,28 @@ app.post('/cadastro', (request, response) => {
   })
 })
 
-app.get('/', (request, response) => {
-  return response.json('OK')
-})
-
-const listaUsuarios = []
-
-app.post('/user', (request, response) => {
-  const dados = request.body
-
-  //Considerando que já validamos os dados
-
-  const novoUsuario = {
-    // id: new Date().getTime(),
-    id: crypto.randomUUID(),
-    nome: dados.nome,
-    email: dados.email,
-    senha: dados.senha,
-    logado: false,
-  }
-
-  listaUsuarios.push(novoUsuario)
-
-  return response.status(201).json({
-    success: true,
-    message: 'Usuário criado com sucesso',
-    data: novoUsuario
-  })
-})
-
 app.post('/login', (request, response) => {
-  const dadosDoUsuario = request.body
+  const data = request.body
 
-  const emailCorreto = listaUsuarios.some((user) => user.email === dadosDoUsuario.email)
+  const usuario = listaUsuarios.find((user) => user.email === data.email)
 
-  const senhaCorreta = listaUsuarios.some((user) => user.senha === dadosDoUsuario.senha)
+  const senha = listaUsuarios.find((user) => user.senha === data.senha)
 
-  if (!emailCorreto || !senhaCorreta) {
+  if (!usuario || !senha) {
     return response.status(400).json({
-      success: false,
-      message: 'Email ou senha estao incorretos',
+      sucess: false,
+      message: 'E-mail ou senha estão incorretos',
       data: {}
     })
   }
 
-  listaUsuarios.forEach(usuario => usuario.logado = false)
+  listaUsuarios.forEach((usuario) => usuario.logado = false)
 
-  const user = listaUsuarios.find((user) => user.email === dadosDoUsuario.email)
+  const user = listaUsuarios.find((user) => user.email === data.email)
 
   user.logado = true
 
-  return response.json({
-    success: true,
-    message: 'Usuário logado com sucesso',
-    data: {}
-  })
+  return response.json('Login realizado com sucesso')
 })
 
 const listaRecados = []
@@ -103,50 +80,107 @@ const listaRecados = []
 app.post('/recados', (request, response) => {
   const dados = request.body
 
-  const usuario = listaUsuarios.find(user => user.logado === true)
+  // const user = listaUsuarios.find(user => user.logado === true)1`
 
-  if (!usuario) {
-    return response.status(400).json({
-      success: false,
-      message: 'Necessario fazer login para criar um post',
-      data: {}
-    })
-  }
-
-  //Fazer validacao dos dados do recado
+  // if (!user) {
+  //   return response.status(400).json({
+  //     sucess: false,
+  //     messsage: 'Necessário fazer login para criar um post',
+  //     data: {}
+  //   })
+  // }
 
   const novoRecado = {
     id: crypto.randomUUID(),
     titulo: dados.titulo,
     descricao: dados.descricao,
-    autor: usuario
+    // autor: user
   }
 
   listaRecados.push(novoRecado)
 
-  console.log(listaRecados)
-
-  return response.status(201).json({
-    success: true,
+  return response.json({
+    sucess: true,
     message: 'Recado criado com sucesso',
     data: novoRecado
   })
 })
 
-// Path Params ou Route Params
-app.delete('/recados/:id', (request, response) => {
+app.get('/listar-recados/:id', (request, response) => {
   const params = request.params
 
-  const recadoExiste = listaRecados.findIndex(recado => recado.id === params.id)
+  const user = listaUsuarios.find(user => user.logado === true)
 
-  if (recadoExiste < 0) {
-    return response.status(400).json('recado nao encontrado')
+  if (!user) {
+    return response.status(400).json({
+      sucess: false,
+      messsage: 'Necessário fazer login para listar seus recados',
+      data: {}
+    })
   }
+
+  const recado = listaRecados.find(recado => recado.id === params.id)
+
+  if (!recado < 0) {
+    return response.status(400).json('Recado não encontrado')
+  }
+
+  const recadoListado = {
+    id: recado.id,
+    titulo: recado.titulo,
+    descricao: recado.descricao,
+    autor: user
+  }
+
+  return response.json({
+    sucess: true,
+    message: 'Recado listado com sucesso',
+    data: recadoListado
+  })
+
+})
+
+app.put('/recados/:id', (request, response) => {
+  const params = request.params
+
+  // const user = listaUsuarios.find(user => user.logado === true)
+
+  const recadoExiste = listaRecados.findIndex(recado => recado.id == params.id)
+
+  const recado = listaRecados.find(recado => recado.id === params.id)
+  console.log(recadoExiste)
+  console.log(recado)
+
+  // if (!user) {
+  //   return response.status(400).json({
+  //     sucess: false,
+  //     messsage: 'Necessário fazer login para atualizar um recado',
+  //     data: {}
+  //   })
+  // }
+
+  console.log(recadoExiste)
+
+  if (!recado) {
+    return response.status(400).json('Recado não encontrado')
+  }
+
+  console.log(recado[recadoExiste])
+  console.log(request.body)
+
+  recado[recadoExiste].titulo = request.body.titulo
+  recado[recadoExiste].descricao = request.body.descricao
 
   listaRecados.splice(recadoExiste, 1)
 
-  console.log(listaRecados)
+  listaRecados.push(recado)
 
-  return response.json('ok')
+  return response.json({
+    sucess: true,
+    message: 'Recado atualizado com sucesso',
+    data: recado
+  })
+
 })
+
 
