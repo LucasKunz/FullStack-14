@@ -27,6 +27,10 @@ export function validaUsuarioAutenticado(request, response, next) {
 
     request.userId = decode.userId
 
+    if (decode.admin) {
+      request.admin = true
+    }
+
     return next()
   })
 }

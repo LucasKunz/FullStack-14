@@ -50,7 +50,7 @@ app.post('/usuarios/login', validarDados, (request, response) => {
     return response.status(400).json({ message: 'E-mail ou senha estão incorretos.' });
   }
 
-  const token = jwt.sign({ userId: usuarioEncontrado.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIREIN })
+  const token = jwt.sign({ userId: usuarioEncontrado.id, admin: false }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIREIN })
 
   return response.status(201).json({
     sucesso: true,
@@ -80,6 +80,10 @@ app.post('/contatos/criar', validarDadosContato, validaUsuarioAutenticado, (requ
   }
 
   contatos.push(contato)
+
+  if (request.admin) {
+    console.log("Usuário administrador")
+  }
 
   return response.status(201).json({
     sucesso: true,
