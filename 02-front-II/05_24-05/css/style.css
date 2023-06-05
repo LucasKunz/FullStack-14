@@ -91,3 +91,7 @@ input[type="submit"]:hover {
     left: calc((100vw / 2) - (90% / 2));
   }
 }
+
+button:disabled {
+  cursor: not-allowed;
+}

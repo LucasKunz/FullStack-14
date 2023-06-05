@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Contatos</title>
+</head>
+<body>
+    <button id="btn-sair">Sair</button>
+    <h1>Meus Contatos</h1>
+    <hr>
+    <p id="texto-apresentacao">
+        <!-- valor aqui depende de quem está logado -->
+    </p>
+
+    <main id="espaco-cards">
+        <!-- Aqui os dados são contruidos pelo JS -->  
+    </main>
+    <div id="espaco-botoes">
+        <!-- botoes serão criados com base na resposta da api -->
+    </div>
+
+    <!-- CND axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- config baseURL axios -->
+    <script src="./js/config-axios.js"></script>
+
+    <!-- nossa lógica de manipulação da DOM -->
+    <script src="./js/home.js"></script>
+</body>
+</html>
