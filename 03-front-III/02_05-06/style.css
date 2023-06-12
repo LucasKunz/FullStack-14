@@ -1,0 +1,85 @@
+/* h1 {
+  color: blue;
+}
+
+@media (min-width: 600px)  {
+  h1 {
+    color: red;
+  }
+} */
+
+/* main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  main {
+    flex-direction: row;
+  }
+} */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+/* @keyframes movimentos {
+  25% {
+    left: calc(100% - 100px);
+    top: 0;
+  }
+
+  50% {
+    left: calc(100% - 100px);
+    top: calc(100% - 100px);
+  }
+
+  75% {
+    left: 0;
+    top: calc(100% - 100px);
+  }
+
+  100% { 
+    top: 50%;
+    left: 50%;
+  }
+} */
+main {
+  animation: correr 3s infinite linear alternate-reverse;
+  position: absolute;
+}
+
+@keyframes correr {
+  from {
+    left: 0;
+  }
+
+  to {
+    left: calc(100% - 200px);
+  }
+}
+
+
+
+
+.sonic {
+  animation: run 0.8s steps(6) infinite;
+  background: url('./sonic1.png');
+  height: 200px;
+  width: calc(1440px / 6);
+  transform: scaleX(-1) translate(0%, 50%) ;
+}
+
+@keyframes run {
+  from {
+    background-position: 0;
+  }
+
+  to {
+    background-position: -1440px;
+  }
+}
