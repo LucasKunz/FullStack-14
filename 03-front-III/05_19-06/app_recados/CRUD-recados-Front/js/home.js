@@ -3,13 +3,17 @@ const api = axios.create({
 })
 
 const containerRecados = document.getElementById('container-recados')
+const userTitle = document.getElementById('user-title')
 
 document.addEventListener('DOMContentLoaded', async () => {
   const usuario = JSON.parse(localStorage.getItem('usuarioLogado')
   )
-  // if (!usuario) {
-  //   window.location.href = './index.html'
-  // }
+
+  if (!usuario) {
+    window.location.href = './index.html'
+  }
+
+  userTitle.innerHTML = `Bem-vindo, ${usuario.name}!`
   const recados = await pegarRecadosUsuario(usuario)
 
   montarCardRecado(recados)
@@ -37,6 +41,7 @@ function montarCardRecado(listaRecados) {
 
     const cardDate = document.createElement('h6')
     cardDate.classList.add('card-subtitle', 'text-body-secondary')
+    cardDate.innerHTML = '10/06/2023'
 
     const icon = document.createElement('i')
     icon.classList.add('bi', 'bi-pin-angle-fill', 'text-primary', 'fs-1')
@@ -50,12 +55,19 @@ function montarCardRecado(listaRecados) {
 
     const buttonEdit = document.createElement('button')
     buttonEdit.classList.add('btn', 'btn-outline-success')
-
     const iconPencil = document.createElement('i')
     iconPencil.classList.add('bi', 'bi-pencil')
 
+    const buttonDelete = document.createElement('button')
+    buttonDelete.classList.add('btn', 'btn-outline-danger')
+    const iconTrash = document.createElement('i')
+    iconTrash.classList.add('bi', 'bi-trash3')
+
+
     buttonEdit.appendChild(iconPencil)
+    buttonDelete.appendChild(iconTrash)
     divButtonsContainer.appendChild(buttonEdit)
+    divButtonsContainer.appendChild(buttonDelete)
     divCardTitleContainer.appendChild(cardTitle)
     divCardTitleContainer.appendChild(cardDate)
     divCardHeader.appendChild(divCardTitleContainer)
